@@ -35,3 +35,5 @@ dlibとはC++の機械学習・画像解析用ライブラリ
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
 predictor = dlib.shape_predictor(path)
 ```
+### dlibの座標の順番
+![](2022-01-17-23-05-51.png)

@@ -5,6 +5,16 @@ detector = dlib.get_frontal_face_detector()
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
 predictor = dlib.shape_predictor(path)
 
+def eye_point(img, parts, left = True): #引数は顔画像・顔器官画像・左目or右目（Trueで左目）
+    if left:
+        eyes = [
+                parts[36],
+                min(parts[37],parts[38], key=lambda x: x.y),
+                
+
+
+
+
 cap = cv2.VideoCapture(0)
 while True:
    ret, frame = cap.read() #Videoを読み込む
