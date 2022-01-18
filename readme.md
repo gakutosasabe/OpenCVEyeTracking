@@ -35,5 +35,7 @@ dlibとはC++の機械学習・画像解析用ライブラリ
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
 predictor = dlib.shape_predictor(path)
 ```
+## 瞳座標の取得
+目の部分から黒い部分を抜き出してその重心を瞳にする
 ### dlibの座標の順番
 ![](2022-01-17-23-05-51.png)
