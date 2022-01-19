@@ -39,3 +39,10 @@ predictor = dlib.shape_predictor(path)
 目の部分から黒い部分を抜き出してその重心を瞳にする
 ### dlibの座標の順番
 ![](2022-01-17-23-05-51.png)
+
+### OpenCVの二値化について
+https://pystyle.info/opencv-image-binarization/
+
+### 二値化した画像の重心を求める方法
+https://cvtech.cc/pycvmoment/
+
