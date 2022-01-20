@@ -21,7 +21,7 @@ def p(img, parts, eye):
     if eye[0]:
         cv2.circle(img, eye[0], 3, (255,255,0), -1)
     if eye[1]:
-        cv2.circle(img, eye[0], 3, (255,255,0), -1)  
+        cv2.circle(img, eye[1], 3, (255,255,0), -1)  
     for i in parts:
         cv2.circle(img, (i.x, i.y), 3, (255, 0, 0), -1)
 
@@ -33,7 +33,7 @@ def eye_point(img, parts, left = True): #引数は顔画像・顔器官画像・
                 parts[36],
                 max(parts[37],parts[38], key=lambda x: x.y),#parts[37].yとparts[38].yの大きいほう
                 min(parts[40],parts[41], key=lambda x: x.y),
-                parts[39]
+                parts[39],
                ]
     else:
         eyes = [
@@ -73,7 +73,7 @@ while True:
    if len(dets) > 0:
        parts = predictor(frame, dets[0]).parts()
        
-       left_eye = eye_point(frame,parts)
+       left_eye = eye_point(frame,parts, True)
        right_eye = eye_point(frame,parts,False)
 
        p(frame, parts, (left_eye, right_eye))
