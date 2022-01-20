@@ -18,7 +18,14 @@ def get_center(gray_img):#二値化された目画像から瞳の重心を求め
         return None
 
 def p(img, parts, eye):
-    
+    if eye[0]:
+        cv2.circle(img, eye[0], 3, (255,255,0), -1)
+    if eye[1]:
+        cv2.circle(img, eye[0], 3, (255,255,0), -1)  
+    for i in parts:
+        cv2.circle(img, (i.x, i.y), 3, (255, 0, 0), -1)
+
+    cv2.imshow("me", img)  
 
 def eye_point(img, parts, left = True): #引数は顔画像・顔器官画像・左目or右目（Trueで左目）
     if left:
@@ -65,11 +72,11 @@ while True:
    dets = detector(frame[:, :, ::-1])
    if len(dets) > 0:
        parts = predictor(frame, dets[0]).parts()
-       img = frame * 0
-       for i in parts:
-           cv2.circle(img, (i.x, i.y), 3, (255, 0, 0), -1)
+       
+       left_eye = eye_point(frame,parts)
+       right_eye = eye_point(frame,parts,False)
 
-       cv2.imshow("me", img)
+       p(frame, parts, (left_eye, right_eye))
    # ここまで　----
 
    if cv2.waitKey(1) == 27: #キーボードが何か入力されたら
