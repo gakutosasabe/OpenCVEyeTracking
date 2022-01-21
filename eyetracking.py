@@ -1,5 +1,6 @@
 import dlib
 import cv2
+import numpy as np
 
 detector = dlib.get_frontal_face_detector()
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
@@ -26,6 +27,28 @@ def p(img, parts, eye):
         cv2.circle(img, (i.x, i.y), 3, (255, 0, 0), -1)
 
     cv2.imshow("me", img)  
+
+def get_eye_parts(parts, left = True):# 目部分の座標を求める
+    if left:
+        eye_parts = [
+                parts[36],
+                max(parts[37],parts[38], key=lambda x: x.y),#parts[37].yとparts[38].yの大きいほう
+                min(parts[40],parts[41], key=lambda x: x.y),
+                parts[39],
+               ]
+    else:
+        eye_parts = [
+                parts[42],
+                max(parts[43],parts[44], key = lambda x: x.y),
+                min(parts[46],parts[47], key=lambda x: x.y),
+                parts[45],
+               ]
+    if is_close(eye_parts[1].y,eye_parts[2].y ):
+        return None
+    else:
+        return eye_parts
+
+
 
 def eye_point(img, parts, left = True): #引数は顔画像・顔器官画像・左目or右目（Trueで左目）
     if left:
