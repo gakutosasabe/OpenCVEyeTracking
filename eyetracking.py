@@ -43,28 +43,15 @@ def get_eye_parts(parts, left = True):# 目部分の座標を求める
                 min(parts[46],parts[47], key=lambda x: x.y),
                 parts[45],
                ]
-    if is_close(eye_parts[1].y,eye_parts[2].y ):
-        return None
-    else:
-        return eye_parts
+    return eye_parts
 
 
 
-def eye_point(img, parts, left = True): #引数は顔画像・顔器官画像・左目or右目（Trueで左目）
+def eye_image(img, parts, left = True): #カメラ画像と見つけた顔の座標から目の画像を求めて表示する
     if left:
-        eyes = [
-                parts[36],
-                max(parts[37],parts[38], key=lambda x: x.y),#parts[37].yとparts[38].yの大きいほう
-                min(parts[40],parts[41], key=lambda x: x.y),
-                parts[39],
-               ]
+        eyes = get_eye_parts(parts, True)
     else:
-        eyes = [
-                parts[42],
-                max(parts[43],parts[44], key = lambda x: x.y),
-                min(parts[46],parts[47], key=lambda x: x.y),
-                parts[45],
-               ]
+        eyes = get_eye_parts(parts, False)
     org_x = eyes[0].x
     org_y = eyes[1].y
 
@@ -73,13 +60,22 @@ def eye_point(img, parts, left = True): #引数は顔画像・顔器官画像・
     eye = img[org_y:eyes[2].y, org_x:eyes[-1].x] #画像から瞳部分をトリミング　
     # img[top : bottom, left : right]
     # Pythonのリスト：マイナスのインデックスは最後尾からの順番を意味する
-    _, eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),30, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
-    #アンダーバーはReturnを無視する
+    if left : 
+        cv2.imshow("left",eye)
+    else :
+        cv2.imshow("right",eye)
+    
+    return eye
 
-    center = get_center(eye)
-    if center:
-        return center[0] + org_x, center[1] + org_y
-    return center
+def threshold(eye): #瞳画像から二値化画像を求める
+    _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),30, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
+    #アンダーバーはReturnを無視する
+    return threshold_eye
+
+    #center = get_center(eye)
+    #if center:
+    #    return center[0] + org_x, center[1] + org_y
+    #return center
 
     
     
@@ -96,10 +92,11 @@ while True:
    if len(dets) > 0:
        parts = predictor(frame, dets[0]).parts()
        
-       left_eye = eye_point(frame,parts, True)
-       right_eye = eye_point(frame,parts,False)
+       left_eye_image =eye_image(frame,parts, True)
+       right_eye_image = eye_image(frame,parts,False)
 
-       p(frame, parts, (left_eye, right_eye))
+       cv2.imshow("me", frame)
+       #p(frame, parts, (left_eye, right_eye))
    # ここまで　----
 
    if cv2.waitKey(1) == 27: #キーボードが何か入力されたら

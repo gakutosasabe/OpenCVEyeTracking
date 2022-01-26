@@ -47,6 +47,7 @@ https://cvtech.cc/pycvmoment/
 # 瞳の位置からどの方向を向いているか推定する
 ## 参考文献
 - 松田君の記事を参考とする　https://www.remma.net/?p=37
+- https://qiita.com/sassa4771/items/fbfb0012744350cf4d93
 
 ## 演算子の意味
 -  //	 a//b	 aをbで割った商の整数値
