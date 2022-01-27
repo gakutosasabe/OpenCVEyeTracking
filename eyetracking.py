@@ -60,10 +60,16 @@ def eye_image(img, parts, left = True): #カメラ画像と見つけた顔の座
     eye = img[org_y:eyes[2].y, org_x:eyes[-1].x] #画像から瞳部分をトリミング　
     # img[top : bottom, left : right]
     # Pythonのリスト：マイナスのインデックスは最後尾からの順番を意味する
+    height = eye.shape[0]
+    width = eye.shape[1]
+    resize_eye = cv2.resize(eye , (int(width*5.0), int(height*5.0)))
+
     if left : 
-        cv2.imshow("left",eye)
+        cv2.imshow("left",resize_eye)
+        cv2.moveWindow('left', 50, 200)
     else :
-        cv2.imshow("right",eye)
+        cv2.imshow("right",resize_eye)
+        cv2.moveWindow('right', 350, 200)
     
     return eye
 
