@@ -32,22 +32,22 @@ def get_eye_parts(parts, left = True):# 目部分の座標を求める
     if left:
         eye_parts = [
                 parts[36],
-                max(parts[37],parts[38], key=lambda x: x.y),#parts[37].yとparts[38].yの大きいほう
-                min(parts[40],parts[41], key=lambda x: x.y),
+                min(parts[37],parts[38], key=lambda x: x.y),#parts[37].yとparts[38].yの大きいほう
+                max(parts[40],parts[41], key=lambda x: x.y),
                 parts[39],
                ]
     else:
         eye_parts = [
                 parts[42],
-                max(parts[43],parts[44], key = lambda x: x.y),
-                min(parts[46],parts[47], key=lambda x: x.y),
+                min(parts[43],parts[44], key = lambda x: x.y),
+                max(parts[46],parts[47], key=lambda x: x.y),
                 parts[45],
                ]
     return eye_parts
 
 
 
-def eye_image(img, parts, left = True): #カメラ画像と見つけた顔の座標から目の画像を求めて表示する
+def get_eye_image(img, parts, left = True): #カメラ画像と見つけた顔の座標から目の画像を求めて表示する
     if left:
         eyes = get_eye_parts(parts, True)
     else:
@@ -73,9 +73,24 @@ def eye_image(img, parts, left = True): #カメラ画像と見つけた顔の座
     
     return eye
 
-def threshold(eye): #瞳画像から二値化画像を求める
+def get_threshold(eye, left = True): #瞳画像から二値化画像を求めて二値化画像を画面に表示する
+    
+    if eye is None: #画像がなかったら何にも返さない
+        return None
+
     _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),30, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
     #アンダーバーはReturnを無視する
+
+    height = eye.shape[0]
+    width = eye.shape[1]
+    resize_eye = cv2.resize(threshold_eye , (int(width*5.0), int(height*5.0)))
+
+    if left : 
+        cv2.imshow("left_threshold",resize_eye)
+        cv2.moveWindow('left_threshold', 50, 300)
+    else :
+        cv2.imshow("right_threshold",resize_eye)
+        cv2.moveWindow('right_threshold', 350, 300)
     return threshold_eye
 
     #center = get_center(eye)
@@ -98,8 +113,10 @@ while True:
    if len(dets) > 0:
        parts = predictor(frame, dets[0]).parts()
        
-       left_eye_image =eye_image(frame,parts, True)
-       right_eye_image = eye_image(frame,parts,False)
+       left_eye_image =get_eye_image(frame,parts, True)
+       right_eye_image = get_eye_image(frame,parts,False)
+       threshold_left_eye_image = get_threshold(left_eye_image, True)
+       threshold_right_eye_image = get_threshold(right_eye_image, False)
 
        cv2.imshow("me", frame)
        #p(frame, parts, (left_eye, right_eye))
