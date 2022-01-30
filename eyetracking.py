@@ -1,3 +1,4 @@
+from lib2to3.pygram import pattern_symbols
 import dlib
 import cv2
 import numpy as np
@@ -14,6 +15,7 @@ def is_close(y0,y1): #目が閉じているか判定する関数
 def get_center(gray_img):#二値化された目画像から瞳の重心を求める
     moments = cv2.moments(gray_img, False)
     try:
+        
         return int(moments['m10']/moments['m00']), int(moments['m01'] / moments['m00'])
     except:
         return None
@@ -59,7 +61,8 @@ def get_eye_image(img, parts, left = True): #カメラ画像と見つけた顔�
         return None
     eye = img[org_y:eyes[2].y, org_x:eyes[-1].x] #画像から瞳部分をトリミング　
     # img[top : bottom, left : right]
-    # Pythonのリスト：マイナスのインデックスは最後尾からの順番を意味する
+    # Pythonのリスト：マイナスのインデックスは最後尾からの順番を意味する  
+
     height = eye.shape[0]
     width = eye.shape[1]
     resize_eye = cv2.resize(eye , (int(width*5.0), int(height*5.0)))
@@ -73,33 +76,53 @@ def get_eye_image(img, parts, left = True): #カメラ画像と見つけた顔�
     
     return eye
 
-def get_threshold(eye, left = True): #瞳画像から二値化画像を求めて二値化画像を画面に表示する
-    
-    if eye is None: #画像がなかったら何にも返さない
+def get_eye_center(img, parts, left = True): #Partsから目のセンター位置を求めて、表示する
+        if left:
+            eyes = get_eye_parts(parts, True)
+        else:
+            eyes = get_eye_parts(parts, False) 
+
+        x_center = int(eyes[0].x + (eyes[-1].x - eyes[0].x)/2)
+        y_center = int(eyes[1].y + (eyes[2].y - eyes[1].y)/2)
+
+        cv2.circle(img, (x_center, y_center), 3, (255,255,0), -1)
+        return x_center, y_center
+
+def get_pupil_location(img, parts, left = True):#Partsから瞳の位置を求めて表示する、その過程で目の二値化画像を表示
+     if left:
+            eyes = get_eye_parts(parts, True)
+     else:
+            eyes = get_eye_parts(parts, False)
+     org_x = eyes[0].x
+     org_y = eyes[1].y
+     if is_close(org_y, eyes[2].y):
         return None
+     eye = img[org_y:eyes[2].y, org_x:eyes[-1].x]
+     _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),30, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
+     
+     height = threshold_eye.shape[0]
+     width = threshold_eye.shape[1]
+     resize_eye = cv2.resize(threshold_eye , (int(width*5.0), int(height*5.0)))
 
-    _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),30, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
-    #アンダーバーはReturnを無視する
-
-    height = eye.shape[0]
-    width = eye.shape[1]
-    resize_eye = cv2.resize(threshold_eye , (int(width*5.0), int(height*5.0)))
-
-    if left : 
+     if left : 
         cv2.imshow("left_threshold",resize_eye)
         cv2.moveWindow('left_threshold', 50, 300)
-    else :
+     else :
         cv2.imshow("right_threshold",resize_eye)
         cv2.moveWindow('right_threshold', 350, 300)
-    return threshold_eye
+     
+     center = get_center(threshold_eye)
+
+     if center:
+         cv2.circle(img, (center[0] + org_x, center[1] + org_y), 3, (255, 0, 0), -1)
+         return center[0] + org_x, center[1] + org_y
+     return center
+
 
     #center = get_center(eye)
     #if center:
     #    return center[0] + org_x, center[1] + org_y
     #return center
-
-    
-    
 
 
 
@@ -115,8 +138,10 @@ while True:
        
        left_eye_image =get_eye_image(frame,parts, True)
        right_eye_image = get_eye_image(frame,parts,False)
-       threshold_left_eye_image = get_threshold(left_eye_image, True)
-       threshold_right_eye_image = get_threshold(right_eye_image, False)
+       left_eye_center = get_eye_center(frame,parts, True)
+       right_eye_center = get_eye_center(frame,parts, False)
+       left_pupil_location = get_pupil_location(frame, parts, True)
+       Right_pupil_location = get_pupil_location(frame, parts, False)
 
        cv2.imshow("me", frame)
        #p(frame, parts, (left_eye, right_eye))
