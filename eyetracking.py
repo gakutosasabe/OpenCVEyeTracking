@@ -119,12 +119,17 @@ def get_pupil_location(img, parts, left = True):#Partsから瞳の位置を求�
      return center
 
 def calculate_relative_pupil_position(img,eye_center, pupil_locate, left = True): #目の中心座標と瞳の座標から目の中央に対しての瞳の相対座標を求める
+    if not eye_center:
+        return
+    if not pupil_locate:
+        return
+    
     relative_pupil_x = pupil_locate[0] - eye_center[0]
     relative_pupil_y = pupil_locate[1] - eye_center[1]
     if left:
         cv2.putText(img,
             "left x=" + str(relative_pupil_x) + " y=" + str(relative_pupil_y),
-            org=(100, 300),
+            org=(50, 400),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
             fontScale=1.0,
             color=(0, 255, 0),
@@ -134,7 +139,7 @@ def calculate_relative_pupil_position(img,eye_center, pupil_locate, left = True)
     else:
         cv2.putText(img,
             "right x=" + str(relative_pupil_x) + " y=" + str(relative_pupil_y),
-            org=(200, 300),
+            org=(50, 450),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
             fontScale=1.0,
             color=(0, 255, 0),
