@@ -148,6 +148,21 @@ def calculate_relative_pupil_position(img,eye_center, pupil_locate, left = True)
     
     return relative_pupil_x, relative_pupil_y
 
+def calculate_direction(img, parts, pupil_locate, left = True):#瞳の位置と目の座標から瞳が向いている方向を求めて表示する
+    if not pupil_locate:
+        return
+
+    if left:
+            eyes = get_eye_parts(parts, True)
+    else:
+            eyes = get_eye_parts(parts, False) 
+    
+    left_border = #目を三等分した時の左ゾーンの境目
+    right_border = #目を三等分した時の右ゾーンの境目
+    
+    return
+
+
 
     #center = get_center(eye)
     #if center:
