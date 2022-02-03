@@ -157,9 +157,23 @@ def calculate_direction(img, parts, pupil_locate, left = True):#瞳の位置と�
     else:
             eyes = get_eye_parts(parts, False) 
     
-    left_border = #目を三等分した時の左ゾーンの境目
-    right_border = #目を三等分した時の右ゾーンの境目
-    
+    left_border = eyes[0].x + (eyes[3].x - eyes[0].x)/3 #目を左右に三等分した時の左ゾーンの境目
+    right_border = eyes[0].x  + (eyes[3].x - eyes[0].x) * 2/3 #目を左右に三等分した時の右ゾーンの境目
+    up_border = eyes[1].y + (eyes[2].y - eyes[1].y)/3 #目を上下に三等分した時の上ゾーンの境目
+    down_border = eyes[1].y + (eyes[2].y - eyes[1].y) * 2/3 #目を上下に三等分した時の下ゾーンの境目
+
+    if eyes[0].x <= pupil_locate[0] < left_border:
+        #瞳は左側にある
+        print("left")
+    elif left_border <= pupil_locate[0] <= right_border:
+        #瞳は真ん中にある
+        print('center')
+    elif right_border <= pupil_locate[0] <= eyes[3].x :
+        #瞳は右側にある
+        print('right')
+    else:
+        #瞳はどこにもない
+        print('nowhere')
     return
 
 
