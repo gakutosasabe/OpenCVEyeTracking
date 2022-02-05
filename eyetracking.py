@@ -148,33 +148,40 @@ def calculate_relative_pupil_position(img,eye_center, pupil_locate, left = True)
     
     return relative_pupil_x, relative_pupil_y
 
-def calculate_direction(img, parts, pupil_locate, left = True):#瞳の位置と目の座標から瞳が向いている方向を求めて表示する
+def calculate_direction(img, parts, pupil_locate):#瞳の位置と目の座標から瞳が向いている方向を求めて表示する
     if not pupil_locate:
         return
 
-    if left:
-            eyes = get_eye_parts(parts, True)
-    else:
-            eyes = get_eye_parts(parts, False) 
+    eyes = get_eye_parts(parts, True)
     
     left_border = eyes[0].x + (eyes[3].x - eyes[0].x)/3 #目を左右に三等分した時の左ゾーンの境目
     right_border = eyes[0].x  + (eyes[3].x - eyes[0].x) * 2/3 #目を左右に三等分した時の右ゾーンの境目
     up_border = eyes[1].y + (eyes[2].y - eyes[1].y)/3 #目を上下に三等分した時の上ゾーンの境目
     down_border = eyes[1].y + (eyes[2].y - eyes[1].y) * 2/3 #目を上下に三等分した時の下ゾーンの境目
-
+    
     if eyes[0].x <= pupil_locate[0] < left_border:
         #瞳は左側にある
-        print("left")
+        show_text(img,"LEFT",50,50)
     elif left_border <= pupil_locate[0] <= right_border:
         #瞳は真ん中にある
-        print('center')
+       show_text(img,"STRAIGHT",50,50) 
     elif right_border <= pupil_locate[0] <= eyes[3].x :
         #瞳は右側にある
-        print('right')
+        show_text(img,"RIGHT",50,50) 
     else:
         #瞳はどこにもない
-        print('nowhere')
+        show_text(img,"NONE",50,50) 
     return
+
+def show_text(img, text, x, y):
+    cv2.putText(img,
+            text,
+            org=(x, y),
+            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+            fontScale=1.0,
+            color=(0, 255, 0),
+            thickness=2,
+            lineType=cv2.LINE_4)
 
 
 
@@ -203,6 +210,7 @@ while True:
        right_pupil_location = get_pupil_location(frame, parts, False)
        left_relative_pupil_position = calculate_relative_pupil_position(frame, left_eye_center,left_pupil_location, True)
        right_relative_pupil_position = calculate_relative_pupil_position(frame, right_eye_center,right_pupil_location, False)
+       calculate_direction(frame,parts,left_pupil_location)
        cv2.imshow("me", frame)
        #p(frame, parts, (left_eye, right_eye))
    # ここまで　----
