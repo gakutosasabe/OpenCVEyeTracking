@@ -98,7 +98,7 @@ def get_pupil_location(img, parts, left = True):#Partsから瞳の位置を求�
      if is_close(org_y, eyes[2].y):
         return None
      eye = img[org_y:eyes[2].y, org_x:eyes[-1].x]
-     _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),30, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
+     _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),40, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
      
      height = threshold_eye.shape[0]
      width = threshold_eye.shape[1]
