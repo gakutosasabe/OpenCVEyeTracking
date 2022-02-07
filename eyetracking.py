@@ -98,7 +98,7 @@ def get_pupil_location(img, parts, left = True):#Partsから瞳の位置を求�
      if is_close(org_y, eyes[2].y):
         return None
      eye = img[org_y:eyes[2].y, org_x:eyes[-1].x]
-     _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),40, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
+     _, threshold_eye = cv2.threshold(cv2.cvtColor(eye, cv2.COLOR_RGB2GRAY),45, 255, cv2.THRESH_BINARY_INV)#第一引数を無視して二値化
      
      height = threshold_eye.shape[0]
      width = threshold_eye.shape[1]
@@ -171,7 +171,23 @@ def calculate_direction(img, parts, pupil_locate):#瞳の位置と目の座標�
     else:
         #瞳はどこにもない
         show_text(img,"NONE",50,50) 
+    
+    if pupil_locate[1] <= up_border:
+        #瞳は上にある
+        show_text(img, "UP", 50, 100)
+    elif up_border <= pupil_locate[1] <= down_border:
+        #瞳は中位置にある
+        show_text(img, "MIDDLE", 50, 100)
+    elif pupil_locate[1] >= down_border:
+        #瞳は下位置にある
+        show_text(img, "DOWN", 50, 100)
     return
+
+    
+    
+    
+    return
+
 
 def show_text(img, text, x, y):
     cv2.putText(img,
