@@ -1,9 +1,6 @@
 # Project概要
 - OpenCV・Pythonの練習と今後の心理学研究での視線分析の必要を兼ねて、OpenCVで視線追跡することを目指す
 
-# スケジュール
-- 1月中に目の位置をアプリで表示する
-
 
 # 瞳の位置を検知してカメラ映像に投影する
 ## 環境作成
@@ -36,7 +33,7 @@ predictor = dlib.shape_predictor(path)
 ## 瞳座標の取得
 目の部分から黒い部分を抜き出してその重心を瞳にする
 ### dlibの座標の順番
-![](2022-01-17-23-05-51.png)
+http://mizutanikirin.net/unity-dlib-facelandmark-detector%E3%81%A7%E9%A1%94%E8%AA%8D%E8%AD%98
 
 ### OpenCVの二値化について
 https://pystyle.info/opencv-image-binarization/
@@ -46,11 +43,9 @@ https://cvtech.cc/pycvmoment/
 
 # 瞳の位置からどの方向を向いているか推定する
 ## 参考文献
-- 松田君の記事を参考とする　https://www.remma.net/?p=37
-- https://qiita.com/sassa4771/items/fbfb0012744350cf4d93
+- こちらの記事を参考としました。　https://www.remma.net/?p=37
+- こちらも　https://qiita.com/sassa4771/items/fbfb0012744350cf4d93
 
-## 演算子の意味
--  //	 a//b	 aをbで割った商の整数値
 
 ### やりたいこと
 #### 表示要件
@@ -63,19 +58,37 @@ https://cvtech.cc/pycvmoment/
 
 ### タスク
 #### 1.目の画像の取得
- - dlibで左右の目の座標を取得する get_eye_parts関数
- - 目の座標から右目・左目の画像を取得する get_eye_image関数
+ - dlibで左右の目の座標を取得する →get_eye_parts関数
+ - 目の座標から右目・左目の画像を取得する →get_eye_image関数
 
 #### 2.瞳の座標の取得 get_pupil_location関数
- - 左右の目の画像をそれぞれ二値化する; 
- - 二値化した画像から左右の目の重心を求める（これを瞳の座標とする)
- - 瞳の座標に点を描画する
+ - 左右の目の画像をそれぞれ二値化する→get_pupil_location関数
+ - 二値化した画像から左右の目の重心を求める（これを瞳の座標とする)→get_pupil_location関数
+ - 瞳の座標に点を描画する→get_pupil_location関数
 #### 3.目の中央に対しての瞳座標の可視化
- - 1.で求めた目の画像から目の中央の座標取得する get_eye_center
- - 中央座標と、2.で求めた瞳の座標から「目の中央に対しての瞳のx,y座標」を求める
- - 瞳のx,y座標を表示する
+ - 1.で求めた目の画像から目の中央の座標取得する →get_eye_center関数
+ - 中央座標と、2.で求めた瞳の座標から「目の中央に対しての瞳のx,y座標」を求める →culculate_relative_pupil_position関数
+ - 瞳のx,y座標を表示する→culculate_relative_pupil_position関数
 #### 4.目の領域の分割と目線方向の表示
- - 1.で取得した右目、左目の領域を左右に三等分して左(Left)、右(Right)、中央(straight)の領域を求める
- - 1.で取得した右目、左目の領域を上下に三等分して上(UP)、下(Down)、中(Middle)の領域を求める
- - 3.で取得した瞳の座標と領域を比較して、目がどちらの方向を向いているか推定する
+ - 1.で取得した右目、左目の領域を左右に三等分して左(Left)、右(Right)、中央(straight)の領域を求める →culculate_direction関数
+ - 1.で取得した右目、左目の領域を上下に三等分して上(UP)、下(Down)、中(Middle)の領域を求める →culculate_direction関数
+ - 3.で取得した瞳の座標と領域を比較して、目がどちらの方向を向いているか推定する →culculate_direction関数
  - 右目・左目の向いている方向を表示する
+  →culculate_direction関数
+
+### できたもの
+https://youtu.be/qzXtZFp7HQU
+- 目の中の青点：検出された瞳の位置
+- 目の中の水色点：dlibで検出された目の中央位置
+- 画面下座標：目の中央位置に対しての瞳の相対座標
+
+### 感想
+- OpenCVを初めて使ったがめっちゃ便利
+- 心理学研究にはかなり有用なツールになりそう
+- 目の画像を二値化して、黒目部分の重心を瞳の位置とするという単純なやり方でもまぁまぁ精度は出る
+- ただ、周囲の明るさにかなり影響を受けるので、二値化の閾値の調整が環境変更のたびに必要かも
+- 作り終わってから知ったのがどうやら目の画像にハフ変換をかけて、円を検出するというやり方が主流らしいので
+そっちも時間があれば試してみたい
+
+### ソース
+https://github.com/gakutosasabe/OpenCVEyeTracking
