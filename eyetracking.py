@@ -2,6 +2,7 @@ from lib2to3.pygram import pattern_symbols
 import dlib
 import cv2
 import numpy as np
+import tkinter as tk
 
 detector = dlib.get_frontal_face_detector()
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
@@ -183,11 +184,6 @@ def calculate_direction(img, parts, pupil_locate):#瞳の位置と目の座標�
         show_text(img, "DOWN", 50, 100)
     return
 
-    
-    
-    
-    return
-
 
 def show_text(img, text, x, y):
     cv2.putText(img,
@@ -198,13 +194,16 @@ def show_text(img, text, x, y):
             color=(0, 255, 0),
             thickness=2,
             lineType=cv2.LINE_4)
+    return
 
+def gui_test():
+    root = tk.Tk()
+    Static1 = tk.Label(text =u'test')
+    Static1.pack()
 
+    root.mainloop()
+    return
 
-    #center = get_center(eye)
-    #if center:
-    #    return center[0] + org_x, center[1] + org_y
-    #return center
 
 
 
@@ -228,6 +227,7 @@ while True:
        right_relative_pupil_position = calculate_relative_pupil_position(frame, right_eye_center,right_pupil_location, False)
        calculate_direction(frame,parts,left_pupil_location)
        cv2.imshow("me", frame)
+       gui_test()
        #p(frame, parts, (left_eye, right_eye))
    # ここまで　----
 
