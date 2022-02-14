@@ -19,9 +19,10 @@ import tkinter as tk
 
 
 ### 参考資料
-https://qiita.com/sassa4771/items/865ce07eaa6cf8e073c8
-https://nnahito.gitbooks.io/tkinter/content/
-
+- https://qiita.com/sassa4771/items/865ce07eaa6cf8e073c8
+- https://nnahito.gitbooks.io/tkinter/content/
+- tkinterのMainloopについて解説<br>
+https://daeudaeu.com/mainloop/
 ## 動画から検出を行う
 ### 参考資料
 https://kivantium.hateblo.jp/entry/2015/04/05/223841
