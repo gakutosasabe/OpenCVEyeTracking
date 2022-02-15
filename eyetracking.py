@@ -205,6 +205,23 @@ def gui_test():#Tkinter
     root.mainloop()
     return
 
+def write_csv(left_pupil_position, right_pupil_position):
+    if not left_pupil_position:
+        return
+    if not right_pupil_position:
+        return
+
+    data = [left_pupil_position[0],left_pupil_position[1],right_pupil_position[0],right_pupil_position[1]]
+
+    with open('out.csv', 'a', newline='') as f_object:  
+        # Pass the CSV  file object to the writer() function
+        writer_object = csv.writer(f_object)
+        # Result - a writer object
+        # Pass the data in the list as an argument into the writerow() function
+        writer_object.writerow(data)  
+        # Close the file object
+    return
+
 
 
 
@@ -228,7 +245,8 @@ while True:
        right_relative_pupil_position = calculate_relative_pupil_position(frame, right_eye_center,right_pupil_location, False)
        calculate_direction(frame,parts,left_pupil_location)
        cv2.imshow("me", frame)
-       gui_test()
+       #gui_test()
+       write_csv(left_relative_pupil_position, right_relative_pupil_position)
        #p(frame, parts, (left_eye, right_eye))
    # ここまで　----
 

@@ -17,7 +17,7 @@
 import tkinter as tk
 ```
 ## CSVに瞳位置情報を吐き出す
-
+https://www.delftstack.com/ja/howto/python/python-append-to-csv/
 ### 参考資料
 - https://qiita.com/sassa4771/items/865ce07eaa6cf8e073c8
 - https://nnahito.gitbooks.io/tkinter/content/
