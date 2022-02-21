@@ -17,7 +17,21 @@
 import tkinter as tk
 ```
 ## CSVに瞳位置情報を吐き出す
+### 要件定義
+- A行はそれぞれの列の説明
+- A列にタイムスタンプ
+- B~E列に右瞳・左瞳の相対位置のX座標、Y座標を出力する。
 https://www.delftstack.com/ja/howto/python/python-append-to-csv/
+- "E"キーを押すと、out.csvに値が出力される
+### 起きた問題
+- 標準のcsvモジュールで吐き出したらアプリが重くなってしまった
+### 対策
+- 毎サイクル一行ずつ書き出しているからだと考えられるので"E"キーを押したらアプリ起動から今まで取った値を一括で書き込むようにする
+- csvに複数行書き込む
+    - https://algorithm.joho.info/programming/python/csv-writerows/
+
+
+
 ### 参考資料
 - https://qiita.com/sassa4771/items/865ce07eaa6cf8e073c8
 - https://nnahito.gitbooks.io/tkinter/content/

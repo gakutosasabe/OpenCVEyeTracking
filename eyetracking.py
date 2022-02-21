@@ -8,6 +8,7 @@ import tkinter as tk
 detector = dlib.get_frontal_face_detector()
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
 predictor = dlib.shape_predictor(path)
+pupil_locate_list = [['time','right_eye_x','right_eye_y','left_eye_x','left_eye_y']]
 
 def is_close(y0,y1): #目が閉じているか判定する関数
     if abs(y0 - y1) < 10:
@@ -205,15 +206,11 @@ def gui_test():#Tkinter
     root.mainloop()
     return
 
-def write_csv(left_pupil_position, right_pupil_position):
-    if not left_pupil_position:
-        return
-    if not right_pupil_position:
+def write_csv(data): #listを受け取ってpupil_locate.csvに吐く
+    if not data:
         return
 
-    data = [left_pupil_position[0],left_pupil_position[1],right_pupil_position[0],right_pupil_position[1]]
-
-    with open('out.csv', 'a', newline='') as f_object:  
+    with open('pupil_locate.csv', 'a', newline='') as f_object:  
         # Pass the CSV  file object to the writer() function
         writer_object = csv.writer(f_object)
         # Result - a writer object
