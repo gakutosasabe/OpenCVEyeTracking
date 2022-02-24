@@ -7,7 +7,7 @@
 - 現在の瞳位置情報がリアルタイムでグラフに表示される
 # 実装
 ## PythonでGUIを使う
-- test
+- test 2
 - Tkinterを使ってPythonでGUIを作る
 ### Tkinterとは
 - PythonでGUIを組むことのできるツールキット
