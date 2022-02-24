@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import csv
 import tkinter as tk
+import datetime
 
 detector = dlib.get_frontal_face_detector()
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
@@ -219,6 +220,19 @@ def write_csv(data): #listを受け取ってpupil_locate.csvに吐く
         # Close the file object
     return
 
+def append_pupil_locate_to_list(left_pupil_position,right_pupil_position):#現在時刻、右瞳位置、左瞳位置をlistに追加する
+    if not left_pupil_position:
+        return
+    if not right_pupil_position:
+        return
+    dt_now = datetime.datetime.now()
+    locate = [[dt_now,left_pupil_position[0],left_pupil_position[1],right_pupil_position[0],right_pupil_position[1]]]
+    pupil_locate_list.append(locate)
+
+    return
+
+
+
 
 
 
@@ -241,9 +255,9 @@ while True:
        left_relative_pupil_position = calculate_relative_pupil_position(frame, left_eye_center,left_pupil_location, True)
        right_relative_pupil_position = calculate_relative_pupil_position(frame, right_eye_center,right_pupil_location, False)
        calculate_direction(frame,parts,left_pupil_location)
+       append_pupil_locate_to_list(left_relative_pupil_position,right_relative_pupil_position)
        cv2.imshow("me", frame)
        #gui_test()
-       write_csv(left_relative_pupil_position, right_relative_pupil_position)
        #p(frame, parts, (left_eye, right_eye))
    # ここまで　----
 

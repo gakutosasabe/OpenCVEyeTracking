@@ -22,7 +22,7 @@ import tkinter as tk
 - A列にタイムスタンプ
 - B~E列に右瞳・左瞳の相対位置のX座標、Y座標を出力する。
 https://www.delftstack.com/ja/howto/python/python-append-to-csv/
-- "E"キーを押すと、out.csvに値が出力される
+- "E"キーを押すと、pupil_locate.csvに値が出力される
 ### 起きた問題
 - 標準のcsvモジュールで吐き出したらアプリが重くなってしまった
 ### 対策
