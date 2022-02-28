@@ -260,8 +260,13 @@ while True:
        #gui_test()
        #p(frame, parts, (left_eye, right_eye))
    # ここまで　----
+   key = cv2.waitKey(1) # 1ミリ秒キー入力を待つ
 
-   if cv2.waitKey(1) == 27: #キーボードが何か入力されたら
+   if key == 27: #Windowを選択された状態でESCボタンを押されたら
        break
+   else if key == ord('e'):#Eキーが押されたら
+       write_csv(pupil_locate_list)
+       printf("pupil_locate.csvに出力完了")
+ 
 cap.release()
 cv2.destroyAllWindows()
