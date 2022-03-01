@@ -5,18 +5,38 @@
 - UIから読み込む動画ファイルの指定と、瞳位置情報を記録するCSVファイルの指定が行える。
 - 上記に加えて、解析後の動画ファイル（瞳位置が動画内にポイントされているもの）が出力されているとなおいい
 - 現在の瞳位置情報がリアルタイムでグラフに表示される
+# 環境
+ubuntu
+Python 3.5.2
+
 # 実装
 ## PythonでGUIを使う
 - test 2
 - Tkinterを使ってPythonでGUIを作る
 ### Tkinterとは
 - PythonでGUIを組むことのできるツールキット
+### 代表的な機能
+- mainloop():ユーザーの入力までアプリを待機させる
+
+
+### tkinterのインストール
+コンソールで以下のコマンドを実行
+```
+sudo apt-get install python3-tk
+```
 ###　使い方
 #### tkinterのimport
 - GUIを使いたいpythonスクリプト中でtkinterをimportするだけ
 ```
 import tkinter as tk
 ```
+### 参考
+- tkinterの基礎
+    - https://www.school.ctc-g.co.jp/columns/hishinuma/hishinuma19.html
+- mainloop()についての解説
+    - https://daeudaeu.com/mainloop/
+
+
 ## CSVに瞳位置情報を吐き出す
 ### 要件定義
 - A行はそれぞれの列の説明
