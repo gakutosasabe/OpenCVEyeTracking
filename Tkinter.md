@@ -47,7 +47,7 @@ https://www.delftstack.com/ja/howto/python/python-append-to-csv/
 ### 起きた問題
 - 標準のcsvモジュールで吐き出したらアプリが重くなってしまった
 ### 対策と実装
-- 毎サイクル一行ずつ書き出しているからだと考えられるので"W"キーを押したらアプリ起動から今まで取った値を一括で書き込むようにする
+- 毎サイクル一行ずつ書き出しているからだと考えられるので"E"キーを押したらアプリ起動から今まで取った値を一括で書き込むようにする
 - csvに複数行書き込む
     - https://algorithm.joho.info/programming/python/csv-writerows/
 - append_pupil_locate_to_list関数で右瞳の相対位置と左瞳の相対位置をpupil_locate_listに突っ込む

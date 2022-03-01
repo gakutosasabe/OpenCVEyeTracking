@@ -9,7 +9,7 @@ import datetime
 detector = dlib.get_frontal_face_detector()
 path = '/Users/GakutoSasabe/Desktop/Research/OpencvEyetracking/shape_predictor_68_face_landmarks.dat'
 predictor = dlib.shape_predictor(path)
-pupil_locate_list = [['time','right_eye_x','right_eye_y','left_eye_x','left_eye_y']]
+pupil_locate_list = [['date','time','right_eye_x','right_eye_y','left_eye_x','left_eye_y']]
 
 def is_close(y0,y1): #目が閉じているか判定する関数
     if abs(y0 - y1) < 10:
@@ -211,13 +211,14 @@ def write_csv(data): #listを受け取ってpupil_locate.csvに吐く
     if not data:
         return
 
-    with open('pupil_locate.csv', 'a', newline='') as f_object:  
+    with open('pupil_locate.csv', 'w', newline='') as f_object:  
         # Pass the CSV  file object to the writer() function
         writer_object = csv.writer(f_object)
         # Result - a writer object
         # Pass the data in the list as an argument into the writerow() function
-        writer_object.writerow(data)  
+        writer_object.writerows(data)  
         # Close the file object
+        print("pupil_locate.csvに出力完了")
     return
 
 def append_pupil_locate_to_list(left_pupil_position,right_pupil_position):#現在時刻、右瞳位置、左瞳位置をlistに追加する
@@ -225,8 +226,8 @@ def append_pupil_locate_to_list(left_pupil_position,right_pupil_position):#現�
         return
     if not right_pupil_position:
         return
-    dt_now = datetime.datetime.now()
-    locate = [[dt_now,left_pupil_position[0],left_pupil_position[1],right_pupil_position[0],right_pupil_position[1]]]
+    for_write_time = datetime.datetime.now()
+    locate = [datetime.date.today(), "{}:{}:{}".format(for_write_time.hour, for_write_time.minute, for_write_time.second),left_pupil_position[0],left_pupil_position[1],right_pupil_position[0],right_pupil_position[1]]
     pupil_locate_list.append(locate)
 
     return
@@ -264,9 +265,8 @@ while True:
 
    if key == 27: #Windowを選択された状態でESCボタンを押されたら
        break
-   else if key == ord('e'):#Eキーが押されたら
+   elif key == ord('e'):#Eキーが押されたら
        write_csv(pupil_locate_list)
-       printf("pupil_locate.csvに出力完了")
  
 cap.release()
 cv2.destroyAllWindows()
